@@ -207,7 +207,7 @@ class Music:
             return
 
         voter = ctx.message.author
-        if voter == state.current.requester:
+        if voter == state.current.requester or '185240097728364544' or '106423924614545408' or '110495139956285440' or '153912865311555584' or '88004288600633344' or '242827186300649474': 
             await self.bot.say('Requester requested skipping song...')
             state.skip()
         elif voter.id not in state.skip_votes:
