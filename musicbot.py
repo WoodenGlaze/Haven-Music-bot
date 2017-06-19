@@ -1,7 +1,22 @@
 import asyncio
 import youtube_dl
 import discord
+import json
 from discord.ext import commands
+
+
+#define credentials file + open it.
+def load_credentials():
+    with open('config.json') as f:
+        return json.load(f)
+
+
+#Gets info from credentials.json
+if True == True:
+    credentials = load_credentials()
+    token = credentials['token']
+    shards = credentials['sharding']
+
 
 if not discord.opus.is_loaded():
     # the 'opus' library here is opus.dll on windows
@@ -145,7 +160,7 @@ class Music:
             fmt = 'An error occurred while processing this request: ```py\n{}: {}\n```'
             await self.bot.send_message(ctx.message.channel, fmt.format(type(e).__name__, e))
         else:
-            player.volume = 0.6
+            player.volume = 0.3
             entry = VoiceEntry(ctx.message, player)
             await self.bot.say('Enqueued ' + str(entry))
             await state.songs.put(entry)
@@ -221,6 +236,10 @@ class Music:
         else:
             await self.bot.say('You have already voted to skip this song.')
 
+    @commands.command(no_pm=True)
+    async def clear(self):
+        state = None
+
     @commands.command(pass_context=True, no_pm=True)
     async def playing(self, ctx):
         """Shows info about the currently played song."""
@@ -232,11 +251,11 @@ class Music:
             skip_count = len(state.skip_votes)
             await self.bot.say('Now playing {} [skips: {}/3]'.format(state.current, skip_count))
 
-bot = commands.Bot(command_prefix=commands.when_mentioned_or('h)'), description='Music bot for Haven')
+bot = commands.Bot(command_prefix=commands.when_mentioned_or('h)', 'haven)', 'music)'), description='Music bot for Haven', shard_count=shards)
 bot.add_cog(Music(bot))
 
 @bot.event
 async def on_ready():
     print('Logged in as:\n{0} (ID: {0.id})'.format(bot.user))
 
-bot.run('')
+bot.run(token)
