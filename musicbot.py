@@ -282,7 +282,6 @@ async def stats(ctx):
 
         em = discord.Embed(title='Bot Stats', color=0x32441c)
         em.add_field(name=u'\U0001F553 Uptime', value=time, inline=False)
-        em.add_field(name=u'\U0001F4E4 Messages sent', value=str(bot.icount))
         em.add_field(name=u'\U0001F4E5 Messages recieved', value=str(bot.message_count))
 
         await bot.send_message(ctx.message.channel, content=None, embed=em)
