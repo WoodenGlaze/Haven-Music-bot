@@ -2,6 +2,7 @@ import asyncio
 import youtube_dl
 import discord
 import json
+import datetime
 from discord.ext import commands
 
 
@@ -257,5 +258,39 @@ bot.add_cog(Music(bot))
 @bot.event
 async def on_ready():
     print('Logged in as:\n{0} (ID: {0.id})'.format(bot.user))
+    bot.uptime = datetime.datetime.now()
+    bot.message_count = 0
+
+
+@bot.event
+async def on_mesage(message):
+    bot.message_count += 1
+
+
+@bot.command(aliases=['status'], pass_context=True)
+async def stats(ctx):
+        """Bot stats."""
+        uptime = (datetime.datetime.now() - bot.uptime)
+        hours, rem = divmod(int(uptime.total_seconds()), 3600)
+        minutes, seconds = divmod(rem, 60)
+        days, hours = divmod(hours, 24)
+        if days:
+            time = '%s days, %s hours, %s minutes, and %s seconds' % (days, hours, minutes, seconds)
+        else:
+            time = '%s hours, %s minutes, and %s seconds' % (hours, minutes, seconds)
+        channel_count = 0
+        if embed_perms(ctx.message):
+            em = discord.Embed(title='Bot Stats', color=0x32441c)
+            em.add_field(name=u'\U0001F553 Uptime', value=time, inline=False)
+            em.add_field(name=u'\U0001F4E4 Messages sent', value=str(bot.icount))
+            em.add_field(name=u'\U0001F4E5 Messages recieved', value=str(bot.message_count))
+            except:
+                pass
+            await bot.send_message(ctx.message.channel, content=None, embed=em)
+        else:
+            msg = '**Bot Stats:** ```Uptime: %s\nMessages Sent: %s\nMessages Recieved: %s```' % (time, str(self.bot.icount), str(self.bot.message_count))
+            await bot.send_message(ctx.message.channel, bot_prefix + msg)
+        await bot.delete_message(ctx.message)
+
 
 bot.run(token)
