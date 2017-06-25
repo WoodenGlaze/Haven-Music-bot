@@ -279,18 +279,14 @@ async def stats(ctx):
         else:
             time = '%s hours, %s minutes, and %s seconds' % (hours, minutes, seconds)
         channel_count = 0
-        if embed_perms(ctx.message):
-            em = discord.Embed(title='Bot Stats', color=0x32441c)
-            em.add_field(name=u'\U0001F553 Uptime', value=time, inline=False)
-            em.add_field(name=u'\U0001F4E4 Messages sent', value=str(bot.icount))
-            em.add_field(name=u'\U0001F4E5 Messages recieved', value=str(bot.message_count))
-            except:
-                pass
-            await bot.send_message(ctx.message.channel, content=None, embed=em)
-        else:
-            msg = '**Bot Stats:** ```Uptime: %s\nMessages Sent: %s\nMessages Recieved: %s```' % (time, str(self.bot.icount), str(self.bot.message_count))
-            await bot.send_message(ctx.message.channel, bot_prefix + msg)
-        await bot.delete_message(ctx.message)
+
+        em = discord.Embed(title='Bot Stats', color=0x32441c)
+        em.add_field(name=u'\U0001F553 Uptime', value=time, inline=False)
+        em.add_field(name=u'\U0001F4E4 Messages sent', value=str(bot.icount))
+        em.add_field(name=u'\U0001F4E5 Messages recieved', value=str(bot.message_count))
+
+        await bot.send_message(ctx.message.channel, content=None, embed=em)
+
 
 
 bot.run(token)
